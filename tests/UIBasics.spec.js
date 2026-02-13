@@ -21,6 +21,7 @@ test.only('Browser context test',async ({browser})=>
     console.log(await cardTitles.nth(1).textContent());
     console.log(await cardTitles.first().textContent());
     console.log(await cardTitles.allTextContents());
+    console.log("Hi");
 });
 
 test('Page fixture test',async ({browser, page})=>
