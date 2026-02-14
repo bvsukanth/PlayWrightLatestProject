@@ -36,3 +36,36 @@ test('Page fixture test',async ({browser, page})=>
     console.log(await page.title());
     await expect(page).toHaveTitle('Google');//ok
 });
+
+test.only('UI Controls',async ({browser, page})=>
+{
+
+    //Dropdown using SelectOption, Radio buttons and Checkbox - Assertions for Radio buttons and Checkbox
+    
+    const userName = page.locator('#username');
+    const signInBtn = page.locator(".btn-md");
+    const dropDown = page.locator("select.form-control");
+
+    await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
+    console.log(await page.title());
+    await userName.fill('rahulshetty'); // Id -> tagname#Id or #Id 
+    await page.locator("[name='password']").fill('Learning@830$3mK2'); // Css based on attribute -> [attribute='value'] 
+    await dropDown.selectOption('consult');
+    //await page.pause();
+
+    //Radio buttons
+    await page.locator(".radiotextsty").nth(1).click();
+    await page.locator("#okayBtn").click();
+    await expect(page.locator(".radiotextsty").nth(1)).toBeChecked();
+    //await page.pause();
+
+    //Checkbox
+    await page.locator("#terms").click();
+    await expect(page.locator("#terms")).toBeChecked();
+    await page.locator("#terms").uncheck();
+    expect(await page.locator("#terms").isChecked()).toBeFalsy();
+
+    await expect(page.locator("[href*='documents-request']")).toHaveAttribute("class","blinkingText");
+
+
+});
