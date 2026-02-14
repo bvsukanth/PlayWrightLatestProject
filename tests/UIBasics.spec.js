@@ -1,6 +1,6 @@
 const {test, expect} = require('@playwright/test');
 
-test.only('Browser context test',async ({browser})=>
+test('Browser context test',async ({browser})=>
 {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -18,10 +18,13 @@ test.only('Browser context test',async ({browser})=>
     await expect(page.locator("[style*='block']")).toContainText("Incorrect username/password.");
     await userName.fill('rahulshettyacademy'); // Id -> tagname#Id or #Id 
     await signInBtn.click(); // Class -> tagname.class or .class
+
     console.log(await cardTitles.nth(1).textContent());
     console.log(await cardTitles.first().textContent());
-    console.log(await cardTitles.allTextContents());
-    console.log("Hi");
+    
+    console.log(await cardTitles.allTextContents());//once array is returned, it will print zero elements in array. Having cardTitles.nth(1).textContent()
+    //or cardTitles.first().textContent() will only give result with all elements 
+   
 });
 
 test('Page fixture test',async ({browser, page})=>
