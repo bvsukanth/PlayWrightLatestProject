@@ -37,7 +37,7 @@ test('Page fixture test',async ({browser, page})=>
     await expect(page).toHaveTitle('Google');//ok
 });
 
-test.only('UI Controls',async ({browser, page})=>
+test('UI Controls',async ({browser, page})=>
 {
 
     //Dropdown using SelectOption, Radio buttons and Checkbox - Assertions for Radio buttons and Checkbox
@@ -64,8 +64,33 @@ test.only('UI Controls',async ({browser, page})=>
     await expect(page.locator("#terms")).toBeChecked();
     await page.locator("#terms").uncheck();
     expect(await page.locator("#terms").isChecked()).toBeFalsy();
-
     await expect(page.locator("[href*='documents-request']")).toHaveAttribute("class","blinkingText");
+});
 
+test('Child Window Handlers',async ({browser})=>
+{
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const userName = page.locator('#username');
+    await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
+ 
+    const [newPage]=await Promise.all(
+    [
+        context.waitForEvent('page'),
+        page.locator("[href*='documents-request']").click(),
+    ]
+    )
+
+   
+    const text = await newPage.locator(".red").textContent();
+    console.log(text);
+    const splitText = text.split("@")[1].split(" ");
+    console.log(splitText[0]);
+    await userName.fill(splitText[0]);
+
+    //WHen new values entered after DOM is loaded/attached. We must use inpuValue to get text contents from text box
+    console.log(await userName.inputValue());
+    await page.pause();
+    
 });
