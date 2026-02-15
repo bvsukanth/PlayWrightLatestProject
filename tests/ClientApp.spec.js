@@ -1,6 +1,6 @@
 const {test, expect} = require('@playwright/test');
 
-test.only('Browser context',async ({browser, page})=>
+test('Browser context',async ({browser, page})=>
 {
     //const context = await browser.newContext();
     //const page = await context.newPage();
@@ -87,7 +87,7 @@ test.only('Browser context',async ({browser, page})=>
     expect(orderID.includes(orderIdDetails)).toBeTruthy();
         
 
-    await page.pause();
+    //await page.pause();
    
 });
 

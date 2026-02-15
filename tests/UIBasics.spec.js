@@ -91,6 +91,6 @@ test('Child Window Handlers',async ({browser})=>
 
     //WHen new values entered after DOM is loaded/attached. We must use inpuValue to get text contents from text box
     console.log(await userName.inputValue());
-    await page.pause();
+    //await page.pause();
     
 });
