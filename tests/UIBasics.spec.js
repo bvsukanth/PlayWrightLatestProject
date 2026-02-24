@@ -1,13 +1,15 @@
-const {test, expect} = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 
-test('Browser context test',async ({browser})=>
-{
+test('Browser context test', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
+    page.route("**/*.{css,jpg,png,jpeg}", route => route.abort())
 
     const userName = page.locator('#username');
     const signInBtn = page.locator(".btn-md");
     const cardTitles = page.locator(".card-title a");
+    page.on('request', request => console.log(request.url()));
+    page.on('response', response => console.log(response.url(), response.status()));
 
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
     console.log(await page.title());
@@ -21,14 +23,13 @@ test('Browser context test',async ({browser})=>
 
     console.log(await cardTitles.nth(1).textContent());
     console.log(await cardTitles.first().textContent());
-    
+
     console.log(await cardTitles.allTextContents());//once array is returned, it will print zero elements in array. Having cardTitles.nth(1).textContent()
     //or cardTitles.first().textContent() will only give result with all elements 
-   
+
 });
 
-test('Page fixture test',async ({browser, page})=>
-{
+test('Page fixture test', async ({ browser, page }) => {
     //when you just need default context and page, send page as fixture in function
     //const context = await browser.newContext();
     //const page = await context.newPage();
@@ -37,11 +38,10 @@ test('Page fixture test',async ({browser, page})=>
     await expect(page).toHaveTitle('Google');//ok
 });
 
-test('UI Controls',async ({browser, page})=>
-{
+test('UI Controls', async ({ browser, page }) => {
 
     //Dropdown using SelectOption, Radio buttons and Checkbox - Assertions for Radio buttons and Checkbox
-    
+
     const userName = page.locator('#username');
     const signInBtn = page.locator(".btn-md");
     const dropDown = page.locator("select.form-control");
@@ -64,25 +64,24 @@ test('UI Controls',async ({browser, page})=>
     await expect(page.locator("#terms")).toBeChecked();
     await page.locator("#terms").uncheck();
     expect(await page.locator("#terms").isChecked()).toBeFalsy();
-    await expect(page.locator("[href*='documents-request']")).toHaveAttribute("class","blinkingText");
+    await expect(page.locator("[href*='documents-request']")).toHaveAttribute("class", "blinkingText");
 });
 
-test('Child Window Handlers',async ({browser})=>
-{
+test('Child Window Handlers', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     const userName = page.locator('#username');
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
- 
-    const [newPage]=await Promise.all(
-    [
-        context.waitForEvent('page'),
-        page.locator("[href*='documents-request']").click(),
-    ]
+
+    const [newPage] = await Promise.all(
+        [
+            context.waitForEvent('page'),
+            page.locator("[href*='documents-request']").click(),
+        ]
     )
 
-   
+
     const text = await newPage.locator(".red").textContent();
     console.log(text);
     const splitText = text.split("@")[1].split(" ");
@@ -92,5 +91,5 @@ test('Child Window Handlers',async ({browser})=>
     //WHen new values entered after DOM is loaded/attached. We must use inpuValue to get text contents from text box
     console.log(await userName.inputValue());
     //await page.pause();
-    
+
 });
