@@ -55,7 +55,9 @@ test('Place order',async ({browser, page})=>
    
 
     await page.locator("button[routerlink*='myorders']").click();
-    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*");
+    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*",
+        route=> route.continue({})
+    );
     console.log(await page.locator(".mt-4").textContent());
 
    
