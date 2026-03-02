@@ -1,5 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pageobjects/LoginPage');
+const { DashBoardpage } = require('../pageobjects/DashBoardpage');
+const {CartPage} = require('../pageobjects/CartPage');
+const {CheckoutPage} = require('../pageobjects/CheckoutPage');
 
 test('Place Order regular', async ({ browser, page }) => {
     //const context = await browser.newContext();
@@ -11,61 +14,70 @@ test('Place Order regular', async ({ browser, page }) => {
     const email = "Tester@2223.com";
     const password = "Test@123";
     //await page.goto("https://rahulshettyacademy.com/client");
-    loginPage.goTo();
-    loginPage.validLogin(email, password);
+    await loginPage.goTo();
+    await loginPage.validLogin(email, password);
     //await page.locator("#userEmail").fill("Tester@2223.com");
     //await page.locator("[formcontrolname='userPassword']").fill("Test@123");
     //await page.locator(".login-btn").click();
 
 
     //1st wait mechanism in playwright to print allTextContents() directly instead of giving nth or first
-    await page.waitForLoadState('networkidle');
+    //await page.waitForLoadState('networkidle');
 
     //2nd wait mechanism in playwright
-    await page.locator(".card-body b").first().waitFor();
+    const dashboardPage = new DashBoardpage(page);
+    await dashboardPage.searchProductAddCart(productName);
+    await dashboardPage.navigateToCart();
+    // await page.locator(".card-body b").first().waitFor();
 
-    console.log(await page.locator(".card-body b").allTextContents());
+    // console.log(await page.locator(".card-body b").allTextContents());
 
-    const count = await products.count();
+    // const count = await products.count();
 
-    for (let i = 0; i < count; i++) {
-        if (await page.locator(".card-body b").nth(i).textContent() == productName) {
-            //just text finding
-            await page.locator(".card-body").nth(i).locator("text= Add To Cart").click();
-            break;
-        }
-    }
+    // for (let i = 0; i < count; i++) {
+    //     if (await page.locator(".card-body b").nth(i).textContent() == productName) {
+    //         //just text finding
+    //         await page.locator(".card-body").nth(i).locator("text= Add To Cart").click();
+    //         break;
+    //     }
+    // }
 
-    await page.locator("[routerlink='/dashboard/cart']").click();
+    // await page.locator("[routerlink='/dashboard/cart']").click();
     //expect(await page.locator(".cartSection h3")).toContainText(productName);
 
-    await page.locator("div li").first().waitFor();
+    const cartPage = new CartPage(page);
+    cartPage.ValidateProductinCart(productName, expect);
+    cartPage.NavgatetoCheckout();
+    // await page.locator("div li").first().waitFor();
 
-    //text finding based on tag
-    const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
-    expect(bool).toBeTruthy();
+    // //text finding based on tag
+    // const bool = await page.locator("h3:has-text('"+productName+"')").isVisible();
+    // expect(bool).toBeTruthy();
 
 
 
-    await page.locator("button:has-text('Checkout')").click();
+    // await page.locator("button:has-text('Checkout')").click();
 
     //pressSequentially can be done with delay also - await page.locator("[placeholder*='Country']").pressSequentially("ind", { delay: 150 });
-    await page.locator("[placeholder='Select Country']").pressSequentially("Ind");
-    const results = page.locator(".ta-results");
-    await results.waitFor();
-    const optionsCount = await results.locator('button').count();
+    const checkoutPage = new CheckoutPage(page);
+    checkoutPage.SelectCountry("India");
+    checkoutPage.validateEmailClickSubmit(email, expect);
+    // await page.locator("[placeholder='Select Country']").pressSequentially("Ind");
+    // const results = page.locator(".ta-results");
+    // await results.waitFor();
+    // const optionsCount = await results.locator('button').count();
 
-    for (let i = 0; i < optionsCount; i++) {
-        const text = await results.locator("button").nth(i).textContent();
-        if (text.trim() === "India") {
-            await results.locator("button").nth(i).click();
-            break;
-        }
-    }
+    // for (let i = 0; i < optionsCount; i++) {
+    //     const text = await results.locator("button").nth(i).textContent();
+    //     if (text.trim() === "India") {
+    //         await results.locator("button").nth(i).click();
+    //         break;
+    //     }
+    // }
 
-    await expect(page.locator(".user__name label")).toHaveText("Tester@2223.com");
+    // await expect(page.locator(".user__name label")).toHaveText("Tester@2223.com");
 
-    await page.locator(".action__submit").click();
+    // await page.locator(".action__submit").click();
     await expect(page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ");
 
     const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
