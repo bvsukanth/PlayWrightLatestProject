@@ -1,106 +1,38 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../pageobjects/LoginPage');
-const { DashBoardpage } = require('../pageobjects/DashBoardpage');
-const {CartPage} = require('../pageobjects/CartPage');
-const {CheckoutPage} = require('../pageobjects/CheckoutPage');
+const { POManager } = require('../pageobjects/POManager');
 
 test('Place Order regular', async ({ browser, page }) => {
-    //const context = await browser.newContext();
-    //const page = await context.newPage();
-
+    
+    const poManager = new POManager(page);
     const products = page.locator(".card-body b");
     const productName = "ZARA COAT 3";
-    const loginPage = new LoginPage(page);
+    
+    const loginPage = poManager.getLoginPage();
     const email = "Tester@2223.com";
     const password = "Test@123";
-    //await page.goto("https://rahulshettyacademy.com/client");
     await loginPage.goTo();
     await loginPage.validLogin(email, password);
-    //await page.locator("#userEmail").fill("Tester@2223.com");
-    //await page.locator("[formcontrolname='userPassword']").fill("Test@123");
-    //await page.locator(".login-btn").click();
 
-
-    //1st wait mechanism in playwright to print allTextContents() directly instead of giving nth or first
-    //await page.waitForLoadState('networkidle');
-
-    //2nd wait mechanism in playwright
-    const dashboardPage = new DashBoardpage(page);
+    const dashboardPage = poManager.getDashBoardPage();
     await dashboardPage.searchProductAddCart(productName);
     await dashboardPage.navigateToCart();
-    // await page.locator(".card-body b").first().waitFor();
+ 
+    const cartPage = poManager.getcartPage();
+    await cartPage.ValidateProductinCart(productName, expect);
+    await cartPage.NavgatetoCheckout();
 
-    // console.log(await page.locator(".card-body b").allTextContents());
+    const checkoutPage = poManager.getcheckOutPage();
+    await checkoutPage.SelectCountry("India");
+    await checkoutPage.validateEmailClickSubmit(email, expect);
 
-    // const count = await products.count();
+    const thankyouPage = poManager.getthankyouPage();
+    const orderID = await thankyouPage.validateSuccessMessageReturnorderID(expect);
+    await thankyouPage.navigateToOrdersPage();
 
-    // for (let i = 0; i < count; i++) {
-    //     if (await page.locator(".card-body b").nth(i).textContent() == productName) {
-    //         //just text finding
-    //         await page.locator(".card-body").nth(i).locator("text= Add To Cart").click();
-    //         break;
-    //     }
-    // }
-
-    // await page.locator("[routerlink='/dashboard/cart']").click();
-    //expect(await page.locator(".cartSection h3")).toContainText(productName);
-
-    const cartPage = new CartPage(page);
-    cartPage.ValidateProductinCart(productName, expect);
-    cartPage.NavgatetoCheckout();
-    // await page.locator("div li").first().waitFor();
-
-    // //text finding based on tag
-    // const bool = await page.locator("h3:has-text('"+productName+"')").isVisible();
-    // expect(bool).toBeTruthy();
-
-
-
-    // await page.locator("button:has-text('Checkout')").click();
-
-    //pressSequentially can be done with delay also - await page.locator("[placeholder*='Country']").pressSequentially("ind", { delay: 150 });
-    const checkoutPage = new CheckoutPage(page);
-    checkoutPage.SelectCountry("India");
-    checkoutPage.validateEmailClickSubmit(email, expect);
-    // await page.locator("[placeholder='Select Country']").pressSequentially("Ind");
-    // const results = page.locator(".ta-results");
-    // await results.waitFor();
-    // const optionsCount = await results.locator('button').count();
-
-    // for (let i = 0; i < optionsCount; i++) {
-    //     const text = await results.locator("button").nth(i).textContent();
-    //     if (text.trim() === "India") {
-    //         await results.locator("button").nth(i).click();
-    //         break;
-    //     }
-    // }
-
-    // await expect(page.locator(".user__name label")).toHaveText("Tester@2223.com");
-
-    // await page.locator(".action__submit").click();
-    await expect(page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ");
-
-    const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-    console.log("Order ID : " + orderID);
-
-    await page.locator("button[routerlink*='myorders']").click();
-
-    await page.locator("tbody").waitFor();
-    const rows = await page.locator("tbody tr");
-
-
-    for (let i = 0; i < await rows.count(); ++i) {
-        const rowOrderId = await rows.nth(i).locator("th").textContent();
-        if (orderID.includes(rowOrderId)) {
-            await rows.nth(i).locator("button").first().click();
-            break;
-        }
-    }
-    const orderIdDetails = await page.locator(".col-text").textContent();
+    const ordersHistoryPage = poManager.getordersHistoryPage();
+    const orderIdDetails = await ordersHistoryPage.clickOnOrderIDandReturnID(orderID);
+    
     expect(orderID.includes(orderIdDetails)).toBeTruthy();
-
-
-    //await page.pause();
 
 });
 
