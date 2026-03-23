@@ -1,5 +1,13 @@
 const { test, expect } = require("@playwright/test")
 
+
+//Below is for runnning tests in a file parallel
+test.describe.configure({mode:'parallel'});
+
+//Below is running tests in serial mode. Tests which have dependency will skip if we use this mode
+//test.describe.configure({mode:'serial'});
+
+
 test('More Validations in Playwright', async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
@@ -49,7 +57,7 @@ test('Screenshot and Visual comparision', async ({ page }) => {
     await expect(page.getByPlaceholder("Hide/Show Example")).toBeHidden();
 });
 
-test.only('Visual testing', async ({ page }) => {
+test('Visual testing', async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/client/");
     expect(await page.screenshot()).toMatchSnapshot("landing.png");

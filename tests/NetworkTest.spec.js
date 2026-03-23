@@ -3,7 +3,7 @@ const loginPayload = { userEmail: "Tester@2223.com", userPassword: "Test@123" };
 const orderpayLoad = { orders: [{ country: "Cuba", productOrderedId: "6960eac0c941646b7a8b3e68" }] };
 let token;
 let orderId;
-const { APIUtils } = require('./utils/APIUtils');
+const { APIUtils } = require('../utils/APIUtils');
 let response;
 const fakePayloadOrders = { data: [], message: "No Orders" };
 
