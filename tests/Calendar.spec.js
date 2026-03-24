@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test('Calendar handling using playwright', async ({ page }) => {
+test('@Web Calendar handling using playwright', async ({ page }) => {
 
     const month = "6";
     const date = "10";

@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test('Browser context test', async ({ browser }) => {
+test('@Web Browser context test', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     page.route("**/*.{css,jpg,png,jpeg}", route => route.abort())

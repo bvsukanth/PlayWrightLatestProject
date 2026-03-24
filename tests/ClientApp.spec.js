@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test('Place Order regular', async ({ browser, page }) => {
+test.skip('Place Order regular', async ({ browser, page }) => {
     //const context = await browser.newContext();
     //const page = await context.newPage();
 

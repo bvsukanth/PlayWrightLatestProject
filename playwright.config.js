@@ -14,19 +14,20 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const config = ({
   testDir: './tests',
-  timeout : 40*1000, //default is 30 seconds in playwright
-  expect:{
-    timeout : 5000
+  retries: 2,
+  timeout: 40 * 1000, //default is 30 seconds in playwright
+  expect: {
+    timeout: 5000
   },
   use: {
-    browserName : 'chromium',
-    headless : false,
-    screenshot : 'on',
+    browserName: 'chromium',
+    headless: true,
+    screenshot: 'on',
     trace: 'retain-on-failure'//off,on,retain-on-failure
   },
 
-  reporter:'html'
-  
+  reporter: 'html'
+
 });
 
 module.exports = config

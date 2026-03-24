@@ -25,7 +25,7 @@ test.beforeEach(() => {
 
 });
 
-test('Place order', async ({ browser, page }) => {
+test('@API Place order', async ({ browser, page }) => {
 
 
 

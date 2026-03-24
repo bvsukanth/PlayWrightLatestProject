@@ -5,7 +5,7 @@ const dataSet = JSON.parse(JSON.stringify(require("../utils/placeorderTestData.j
 
 for(const data of dataSet)
 {
-    test(`Place Order regular with PO for ${data.productName}`, async ({page }) => {
+    test(`@Web Place Order regular with PO for ${data.productName}`, async ({page }) => {
 
         const poManager = new POManager(page);
         const products = page.locator(".card-body b");
