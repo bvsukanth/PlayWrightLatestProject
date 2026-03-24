@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","15900","@Web Calendar handling using playwright","","Tue Mar 24 17:14:50 CDT 2026","passed","Tue Mar 24 17:15:06 CDT 2026","","Calendar.spec.js","",""
+"","17315","@Web Browser context test","","Tue Mar 24 17:14:50 CDT 2026","passed","Tue Mar 24 17:15:07 CDT 2026","","UIBasics.spec.js","",""
+"","10600","@Web Place Order regular with PO for ADIDAS ORIGINAL","","Tue Mar 24 17:15:10 CDT 2026","passed","Tue Mar 24 17:15:20 CDT 2026","","ClientAppPO.spec.js","",""
+"","19241","@Web Place Order regular with PO for ZARA COAT 3","","Tue Mar 24 17:14:50 CDT 2026","passed","Tue Mar 24 17:15:09 CDT 2026","","ClientAppPO.spec.js","",""

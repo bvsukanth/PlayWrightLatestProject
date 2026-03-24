@@ -40,7 +40,7 @@ const config = ({
       name: 'chrome',
       use: {
         browserName: 'chromium',
-        headless: false,
+        headless: true,
 
 
         screenshot: 'on',
